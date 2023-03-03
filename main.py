@@ -34,7 +34,7 @@ class TetrisWidget(GridLayout):
             obj = GridButton()
             self.add_widget(obj)
 
-        self.r = 5#random.randint(1, 7)
+        self.r = 6#random.randint(1, 7)
         self.new_shape()
 
     def update_game(self, window_width, dt):
@@ -245,6 +245,39 @@ class TetrisWidget(GridLayout):
             self.shapes[-1][3].position_y = y - 1
             
             self.shapes[-1][0].version = 1
+            
+        elif self.shapes[-1][0].brick == "S" and self.shapes[-1][0].version == 1:
+            x = self.shapes[-1][0].position_x
+            y = self.shapes[-1][0].position_y
+            
+            if x < 1:
+                x = 1
+            
+            self.shapes[-1][0].position_x = x - 1
+            self.shapes[-1][0].position_y = y + 1
+            self.shapes[-1][1].position_x = x
+            self.shapes[-1][1].position_y = y + 1 
+            self.shapes[-1][2].position_x = x
+            self.shapes[-1][2].position_y = y
+            self.shapes[-1][3].position_x = x + 1
+            self.shapes[-1][3].position_y = y
+            
+            self.shapes[-1][0].version = 2
+        
+        elif self.shapes[-1][0].brick == "S" and self.shapes[-1][0].version == 2:
+            x = self.shapes[-1][0].position_x
+            y = self.shapes[-1][0].position_y
+            
+            self.shapes[-1][0].position_x = x
+            self.shapes[-1][0].position_y = y - 1
+            self.shapes[-1][1].position_x = x
+            self.shapes[-1][1].position_y = y 
+            self.shapes[-1][2].position_x = x + 1
+            self.shapes[-1][2].position_y = y
+            self.shapes[-1][3].position_x = x + 1
+            self.shapes[-1][3].position_y = y + 1
+            
+            self.shapes[-1][0].version = 1
 
     def fall(self, dt):
         self.time += dt
@@ -320,7 +353,7 @@ class TetrisWidget(GridLayout):
 
         self.shapes.append(shape)
 
-        self.r = 5#random.randint(1, 7)
+        self.r = 6#random.randint(1, 7)
 
     def collisions_bottom(self):
         for i in self.shapes[0:-1]:
