@@ -2,6 +2,7 @@ from kivy.app import App
 from kivy.uix.button import Button
 from kivy.uix.boxlayout import BoxLayout
 from kivy.uix.gridlayout import GridLayout
+from kivy.core.window import Window
 from kivy.clock import Clock
 from kivy.graphics.vertex_instructions import Rectangle
 
@@ -66,13 +67,22 @@ class TetrisWidget(GridLayout):
                         for j in self.shapes[-1]:
                             j.active = False
         for i in self.shapes[-1]:
-            if i.active == True:                        
+            if i.active == True:
                 if i.position_y == 0:
                     for j in self.shapes[-1]:
-                        j.active = False                 
+                        j.active = False
             else:
                 self.new_shape()
-                return True             
+                return True
+
+    def move_right(self):
+        for i in self.shapes[-1]:
+            i.position_x += 1
+
+    def move_left(self):
+        for i in self.shapes[-1]:
+            i.position_x -= 1
+
 
 class Shape(Rectangle):
     position_x = 0
@@ -91,10 +101,33 @@ class App(BoxLayout):
 
         self.orientation = 'horizontal'
 
+        self._keyboard = Window.request_keyboard(self.keyboard_closed, self)
+        self._keyboard.bind(on_key_down=self.on_key_down)
+        self._keyboard.bind(on_key_up=self.on_key_up)
+
         self.tetris = TetrisWidget()
         self.add_widget(self.tetris)
 
         Clock.schedule_interval(self.update, 1/120)
+
+    def on_key_down(self, keyboard, keycode, text, modifiers):
+        if keycode[1] == "left":
+            self.tetris.move_left()
+        if keycode[1] == "right":
+            self.tetris.move_right()
+        if keycode[1] == "down":
+            self.tetris.game_speed = 0.1
+        return True
+
+    def on_key_up(self, keyboard, keycode):
+        if keycode[1] == "down":
+            self.tetris.game_speed = 0.5
+        return True
+
+    def keyboard_closed(self):
+        self._keyboard.unbind(on_key_down=self.on_key_down)
+        self._keyboard.unbind(on_key_up=self.on_key_up)
+        self._keyboard = None
 
     def update(self, dt):
         self.tetris.update_game(self.tetris.width, dt)
