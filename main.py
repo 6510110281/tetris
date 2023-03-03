@@ -132,6 +132,7 @@ class TetrisWidget(GridLayout):
                         j.active = False
             else:
                 self.new_shape()
+                self.delete_row()
                 return True
 
     def collisions_right(self):
@@ -163,6 +164,40 @@ class TetrisWidget(GridLayout):
         if not self.collisions_left():
             for i in self.shapes[-1]:
                 i.position_x -= 1
+
+    def delete_row(self):
+        rows = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+                0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
+
+        for i in self.shapes[0:-1]:
+            for j in i:
+                rows[j.position_y] += 1
+
+        for i in range(20):
+            if rows[i] == 10:
+                for j in self.shapes[0:-1]:
+                    for k in j:
+                        if k.position_y == i:
+                            self.canvas.remove(k)
+                            j.remove(k)
+                for j in self.shapes[0:-1]:
+                    for k in j:
+                        if k.position_y == i:
+                            self.canvas.remove(k)
+                            j.remove(k)
+                for j in self.shapes[0:-1]:
+                    for k in j:
+                        if k.position_y == i:
+                            self.canvas.remove(k)
+                            j.remove(k)
+                for j in self.shapes[0:-1]:
+                    for k in j:
+                        if k.position_y == i:
+                            self.canvas.remove(k)
+                            j.remove(k)
+                        elif k.position_y > i:
+                            k.position_y -= 1
+                self.delete_row()
 
 
 class Shape(Rectangle):
