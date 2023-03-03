@@ -75,13 +75,35 @@ class TetrisWidget(GridLayout):
                 self.new_shape()
                 return True
 
-    def move_right(self):
+    def collisions_right(self):
         for i in self.shapes[-1]:
-            i.position_x += 1
+            if i.position_x == 9:
+                return True
+            for j in self.shapes[0:-1]:
+                for k in j:
+                    if i.position_x + 1 == k.position_x and i.position_y == k.position_y:
+                        return True
+        return False
+
+    def collisions_left(self):
+        for i in self.shapes[-1]:
+            if i.position_x == 0:
+                return True
+            for j in self.shapes[0:-1]:
+                for k in j:
+                    if i.position_x - 1 == k.position_x and i.position_y == k.position_y:
+                        return True
+        return False
+
+    def move_right(self):
+        if not self.collisions_right():
+            for i in self.shapes[-1]:
+                i.position_x += 1
 
     def move_left(self):
-        for i in self.shapes[-1]:
-            i.position_x -= 1
+        if not self.collisions_left():
+            for i in self.shapes[-1]:
+                i.position_x -= 1
 
 
 class Shape(Rectangle):
