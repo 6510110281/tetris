@@ -34,7 +34,7 @@ class TetrisWidget(GridLayout):
             obj = GridButton()
             self.add_widget(obj)
 
-        self.r = 1#random.randint(1, 7)
+        self.r = 3#random.randint(1, 7)
         self.new_shape()
 
     def update_game(self, window_width, dt):
@@ -75,6 +75,72 @@ class TetrisWidget(GridLayout):
             self.shapes[-1][2].position_y = y + 2
             self.shapes[-1][3].position_x = x + 1
             self.shapes[-1][3].position_y = y + 3
+            
+            self.shapes[-1][0].version = 1
+            
+        elif self.shapes[-1][0].brick == "L" and self.shapes[-1][0].version == 1:
+            x = self.shapes[-1][0].position_x
+            y = self.shapes[-1][0].position_y
+            
+            if x > 6:
+                x = 6
+            
+            self.shapes[-1][0].position_x = x 
+            self.shapes[-1][0].position_y = y + 1
+            self.shapes[-1][1].position_x = x + 1
+            self.shapes[-1][1].position_y = y + 1
+            self.shapes[-1][2].position_x = x + 2
+            self.shapes[-1][2].position_y = y + 1
+            self.shapes[-1][3].position_x = x 
+            self.shapes[-1][3].position_y = y
+            
+            self.shapes[-1][0].version = 2
+            
+        elif self.shapes[-1][0].brick == "L" and self.shapes[-1][0].version == 2:
+            x = self.shapes[-1][0].position_x
+            y = self.shapes[-1][0].position_y
+            
+            self.shapes[-1][0].position_x = x + 1
+            self.shapes[-1][0].position_y = y - 2
+            self.shapes[-1][1].position_x = x + 1
+            self.shapes[-1][1].position_y = y - 1
+            self.shapes[-1][2].position_x = x
+            self.shapes[-1][2].position_y = y 
+            self.shapes[-1][3].position_x = x + 1
+            self.shapes[-1][3].position_y = y
+            
+            self.shapes[-1][0].version = 3
+            
+        elif self.shapes[-1][0].brick == "L" and self.shapes[-1][0].version == 3:
+            x = self.shapes[-1][0].position_x
+            y = self.shapes[-1][0].position_y
+            
+            if x > 8:
+                x = 8
+            
+            self.shapes[-1][0].position_x = x + 1
+            self.shapes[-1][0].position_y = y - 1
+            self.shapes[-1][1].position_x = x + 1
+            self.shapes[-1][1].position_y = y
+            self.shapes[-1][2].position_x = x
+            self.shapes[-1][2].position_y = y - 1
+            self.shapes[-1][3].position_x = x - 1
+            self.shapes[-1][3].position_y = y - 1
+            
+            self.shapes[-1][0].version = 4
+            
+        elif self.shapes[-1][0].brick == "L" and self.shapes[-1][0].version == 4:
+            x = self.shapes[-1][0].position_x
+            y = self.shapes[-1][0].position_y
+            
+            self.shapes[-1][0].position_x = x - 1
+            self.shapes[-1][0].position_y = y
+            self.shapes[-1][1].position_x = x - 1
+            self.shapes[-1][1].position_y = y + 1
+            self.shapes[-1][2].position_x = x - 1
+            self.shapes[-1][2].position_y = y + 2
+            self.shapes[-1][3].position_x = x 
+            self.shapes[-1][3].position_y = y 
             
             self.shapes[-1][0].version = 1
 
@@ -152,7 +218,7 @@ class TetrisWidget(GridLayout):
 
         self.shapes.append(shape)
 
-        self.r = 1#random.randint(1, 7)
+        self.r = 3#random.randint(1, 7)
 
     def collisions_bottom(self):
         for i in self.shapes[0:-1]:
